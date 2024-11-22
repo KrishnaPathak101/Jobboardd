@@ -7,27 +7,44 @@ export async function POST(req) {
     await connectToDatabase();
 
     const body = await req.json();
-    const { fullName, email, coverLetter, jobId, userId } = body;
+    const { fullName, email, coverLetter, jobId, applicant, jobPoster } = body;
 
-    // Validate required fields
-    if (!fullName || !email || !coverLetter || !jobId || !userId) {
+    // If only jobPoster is provided, fetch all related applications
+    if (jobPoster && !fullName && !email && !coverLetter && !jobId && !applicant) {
+      const applications = await Application.find({ jobPoster })
+        .populate('jobId') // Populate Job details
+        .populate('applicant', 'fullName email') // Populate Applicant details
+        .populate('jobPoster', 'fullName email'); // Populate Job Poster details
+
+      return NextResponse.json({ applications }, { status: 200 });
+    }
+
+    // Validate required fields for saving an application
+    if (!fullName || !email || !coverLetter || !jobId) {
       return NextResponse.json({ message: 'All fields are required.' }, { status: 400 });
     }
 
-    // Save the application using matching schema field names
+    // Save the application
     const application = new Application({
       fullName,
-      email, // matches schema
-      coverLetter, // matches schema
+      email,
+      coverLetter,
       jobId,
-      userId,
+      applicant,
+      jobPoster,
     });
 
-    await application.save();
+    const savedApplication = await application.save();
 
-    return NextResponse.json({ message: 'Application submitted successfully!' }, { status: 201 });
+    // Fetch and populate the saved application
+    const populatedApplication = await Application.findById(savedApplication._id)
+      .populate('jobId') // Populate Job details
+      .populate('applicant', 'fullName email') // Populate Applicant details
+      .populate('jobPoster', 'fullName email'); // Populate Job Poster details
+
+    return NextResponse.json(populatedApplication, { status: 201 });
   } catch (error) {
-    console.error('Error submitting application:', error);
+    console.error('Error handling request:', error);
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
 }

@@ -1,24 +1,32 @@
 import { mongoose } from "mongoose";
 
 const applicationSchema = new mongoose.Schema({
-    userId: {
-        type: String,
-        required: true,
-    },
+   
     jobId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Job",
         required: true,
     },
     fullName: {
         type: String,
         required: true,
     },
-    email: { // Updated field name
+    email: {
         type: String,
         required: true,
     },
-    coverLetter: { // Updated field name
+    coverLetter: {
         type: String,
+        required: true,
+    },
+    applicant: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
+    jobPoster: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true,
     },
     createdAt: {
@@ -27,11 +35,10 @@ const applicationSchema = new mongoose.Schema({
     },
 });
 
-// Delete existing model to apply schema changes during development
 if (mongoose.models?.Application) {
     delete mongoose.models?.Application;
 }
 
-// Define the model and export it
 const Application = mongoose.model('Application', applicationSchema);
 export default Application;
+

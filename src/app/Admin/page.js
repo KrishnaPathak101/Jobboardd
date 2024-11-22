@@ -6,6 +6,7 @@ const AdminPanel = () => {
     const { userId, userJobs, setUserJobs } = useContext(StateContext);
     const [type, setType] = useState('dashboard');
     const [orgData, setOrgData] = useState([]);
+    const [applicationData, setApplicationData] = useState([]);
     const [jobData, setJobData] = useState({
         jobTitle: '',
         jobDescription: '',
@@ -32,6 +33,28 @@ const AdminPanel = () => {
                 }
             };
             fetchOrgData();
+        }
+
+        if(type === 'view-applications' && userId) {
+            const fetchApplicationData = async () => {
+                try {
+                   
+                    const response = await fetch('api/applications' , {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body:JSON.stringify({jobPoster: userId})
+                    })
+                    const data = await response.json();
+                    console.log(data.applications);
+                    setApplicationData(data.applications);
+                    console.log(applicationData)
+                } catch (error) {
+                    console.error('Error fetching applications:', error);
+                }
+                
+
+            }
+            fetchApplicationData();
         }
     }, [type, userId]);
 
@@ -141,6 +164,12 @@ const AdminPanel = () => {
                         className="px-5 py-2 hover:bg-gray-700 cursor-pointer"
                     >
                         View Jobs
+                    </li>
+                    <li
+                        onClick={() => setType('view-applications')}
+                        className="px-5 py-2 hover:bg-gray-700 cursor-pointer"
+                    >
+                        Applications
                     </li>
                     <li
                         onClick={() => setType('create-job')}
@@ -320,6 +349,38 @@ const AdminPanel = () => {
               Submit
             </button>
           </form>
+        </div>
+      )}
+       {type === "view-applications" && (
+        <div>
+          <h1 className="text-2xl font-bold mb-4">Applications</h1>
+          <div className="overflow-x-auto">
+            <table className="min-w-full border border-gray-200">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-4 py-2 border">Applicant Name</th>
+                  <th className="px-4 py-2 border">Email</th>
+                  <th className="px-4 py-2 border">Job Title</th>
+                  <th className="px-4 py-2 border">Application Date</th>
+                  <th className="px-4 py-2 border">Cover Letter</th>
+                </tr>
+              </thead>
+              <tbody>
+                {applicationData?.map((application) => (
+                  <tr key={application._id} className="hover:bg-gray-50">
+                    <td className="px-4 py-2 border">{application.fullName}</td>
+                    <td className="px-4 py-2 border">{application.email}</td>
+                    <td className="px-4 py-2 border">{application.jobId.title}</td>
+                    <td className="px-4 py-2 border">
+                      {new Date(application.createdAt).toLocaleDateString()}{" "}
+                      {new Date(application.createdAt).toLocaleTimeString()}
+                    </td>
+                    <td className="px-4 py-2 border">{application.coverLetter}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
             </div>

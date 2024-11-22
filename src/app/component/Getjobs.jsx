@@ -9,10 +9,12 @@ const Getjobs = ({ className }) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [coverLetter, setCoverLetter] = useState('');
+  const [jobPosetId, setJobPosetId] = useState('');
   const { userId } = useContext(StateContext);
 
   const handleApplyClick = (job) => {
     setSelectedJob(job);
+    setJobPosetId(job.userId); // Set the job poster ID here
     setShowForm(true);
   };
 
@@ -23,7 +25,9 @@ const Getjobs = ({ className }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (userId) {
+      console.log("User ID:", userId);
+    }
     try {
       const response = await fetch('/api/applications', {
         method: 'POST',
@@ -33,8 +37,9 @@ const Getjobs = ({ className }) => {
           email,
           coverLetter,
           jobId: selectedJob._id,
-          userId, // Replace this with the actual userId
-        }),
+          applicant: userId,
+          jobPoster: jobPosetId  // Replace this with the actual userId
+        })
       });
 
       if (response.ok) {
