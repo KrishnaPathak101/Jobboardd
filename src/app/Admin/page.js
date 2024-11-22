@@ -370,7 +370,7 @@ const AdminPanel = () => {
                   <tr key={application._id} className="hover:bg-gray-50">
                     <td className="px-4 py-2 border">{application.fullName}</td>
                     <td className="px-4 py-2 border">{application.email}</td>
-                    <td className="px-4 py-2 border">{application.jobId.title}</td>
+                    <td className="px-4 py-2 border">{application?.jobId?.title}</td>
                     <td className="px-4 py-2 border">
                       {new Date(application.createdAt).toLocaleDateString()}{" "}
                       {new Date(application.createdAt).toLocaleTimeString()}
