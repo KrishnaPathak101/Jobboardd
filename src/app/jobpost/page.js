@@ -16,7 +16,7 @@ const Page = () => {
     jobSalary: "",
   });
   const [job, setJob] = useState([]);
-  const { userId } = useContext(StateContext);
+  const { userId , userJobs, setUserJobs } = useContext(StateContext);
 
   useEffect(() => {
    
@@ -53,6 +53,7 @@ const Page = () => {
         })
         const data = await response.json();
         setJob(data);
+        setUserJobs(data);
         console.log(data);
       }
       getJobData();

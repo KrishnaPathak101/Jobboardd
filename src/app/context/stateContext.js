@@ -10,6 +10,7 @@ export const StateProvider = ({ children }) => {
   const [user, setUser] = useState(null); // User state
   const [userId, setUserId] = useState(null); // User ID state
   const [jobs, setJobs] = useState([]); // Jobs state
+  const [userJobs, setUserJobs] = useState([]); // User jobs state
   // Login function that sets the user and optionally userId
   const login = (name, id) => {
     setUser({ name });
@@ -41,7 +42,7 @@ export const StateProvider = ({ children }) => {
   }, [userId])
 
   return (
-    <StateContext.Provider value={{ setUserId,user,jobs, userId, login, logout }}>
+    <StateContext.Provider value={{ userJobs, setUserJobs, setUserId,user,jobs, userId, login, logout }}>
       {children}
     </StateContext.Provider>
   );

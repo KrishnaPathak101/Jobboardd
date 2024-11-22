@@ -39,7 +39,7 @@ const Header = () => {
   }, [user]);
 
   return (
-    <div className="container mx-auto px-4 py-2 shadow-md flex justify-between items-center bg-white max-w-7xl">
+    <div className="fixed top-0 left-0 right-0 z-50 container mx-auto px-4 py-2 shadow-md flex justify-between items-center bg-white max-w-7xl">
       <Link href={'/'} className="text-lg font-bold text-blue-600">Job Board</Link>
       <div className="flex gap-4 items-center">
         <SignedOut>
@@ -49,7 +49,7 @@ const Header = () => {
           <UserButton />
         </SignedIn>
         <Link
-          href="/jobpost"
+          href="/Admin"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
           Post Job
@@ -60,3 +60,4 @@ const Header = () => {
 };
 
 export default Header;
+

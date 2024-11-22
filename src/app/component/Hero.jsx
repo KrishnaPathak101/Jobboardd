@@ -2,7 +2,7 @@ import React from 'react';
 
 const Hero = () => {
   return (
-    <section className="flex flex-col sm:flex-row items-center justify-center p-4 my-4 mx-1 rounded-md backdrop-blur-md bg-gray-150">
+    <section className="flex mt-10 flex-col sm:flex-row items-center justify-center p-4 my-4 mx-1 rounded-md backdrop-blur-md bg-gray-150">
       <div className="container max-w-4xl mx-auto">
         <h1 className="text-3xl sm:text-6xl text-center font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500">
           Find Your Dream Job
