@@ -4,6 +4,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/n
 import Link from 'next/link';
 import React, { useContext, useEffect } from 'react';
 import { StateContext } from '../context/stateContext';
+import RoleManagement from './Rolemanagement';
 
 const Header = () => {
   const { userId, setUserId } = useContext(StateContext);
@@ -46,6 +47,7 @@ const Header = () => {
           <SignInButton />
         </SignedOut>
         <SignedIn>
+          <RoleManagement/>
           <UserButton />
         </SignedIn>
         <Link

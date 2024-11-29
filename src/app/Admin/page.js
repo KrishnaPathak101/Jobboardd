@@ -7,6 +7,7 @@ import CreateJob from '../component/CreateJob.jsx';
 import Dashboard from '../component/Dashboard.jsx';
 import CreateOrg from '../component/CreateOrg.jsx';
 import ViewApplication from '../component/ViewApplication.jsx';
+import { Protect } from '@clerk/nextjs';
 
 const AdminPanel = () => {
     const { userId, userJobs, setUserJobs } = useContext(StateContext);
@@ -154,6 +155,7 @@ const AdminPanel = () => {
     };
 
     return (
+        <Protect>
         <div className="flex h-screen ">
             {/* Sidebar */}
             <Sidebar setType={setType} />
@@ -169,6 +171,7 @@ const AdminPanel = () => {
                 <ViewApplication type={type} applicationData={applicationData} />
             </div>
         </div>
+        </Protect>
     );
 };
 
